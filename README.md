@@ -42,9 +42,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 > NOTE: it's recommended to use a separate Alby Hub instance if you wish to run Alby Jim.
 
 1. Get a fly account and install flyctl
-2. Update fly.toml to have a different app name
-3. Run fly launch
-4. Set your fly secrets: `fly secrets set ALBYHUB_URL="" ALBYHUB_NAME="" AUTH_TOKEN="" BASE_URL="https://YOURAPPNAME.fly.dev"`
+2. Clone or download this repository.
+3. Update fly.toml to have a different app name
+4. Open a terminal and navigate to the repository folder you cloned/downloaded. Run `fly launch`
+5. Set your fly secrets: `fly secrets set ALBYHUB_URL="" ALBYHUB_NAME="" AUTH_TOKEN="" BASE_URL="https://YOURAPPNAME.fly.dev"`
 
 You can get the ALBYHUB_URL, AUTH_TOKEN and ALBYHUB_NAME by logging into Alby Hub and Going to settings -> Developer. ALBYHUB_NAME is only needed for Alby Cloud-hosted Alby Hubs.
 
