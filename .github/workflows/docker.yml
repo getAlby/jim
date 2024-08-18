@@ -1,0 +1,25 @@
+name: Docker build & push
+on:
+  push:
+jobs:
+  build:
+    env:
+      REGISTRY: ghcr.io
+      IMAGENAME: ${{ github.event.repository.name }}
+      TAG: ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        name: Check out code
+      - name: Docker build
+        if: github.actor != 'dependabot[bot]'
+        uses: mr-smithers-excellent/docker-build-push@v6
+        id: build
+        with:
+          image: ${{ env.IMAGENAME }}
+          registry: ${{ env.REGISTRY }}
+          multiPlatform: false
+          platform: linux/amd64
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          addLatest: true
