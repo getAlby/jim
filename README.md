@@ -79,16 +79,16 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Run on Fly
 
 1. Get a fly account and install flyctl
-2. Clone or download this repository.
-3. Update fly.toml to have a different app name
-4. Open a terminal and navigate to the repository folder you cloned/downloaded. Run `fly launch`
+2. Download the [fly.toml file](https://github.com/getAlby/jim/blob/master/hosting/fly.toml) and save it inside an empty folder.
+3. Open fly.toml in a text editor and change the app name on line 6 to a unique one (e.g. app = 'my-awesome-app-name').
+4. Open a terminal and navigate to the folder your fly.toml is in. Run `fly launch`
 5. Set your fly secrets: `fly secrets set ALBYHUB_URL="your-albyhub-url.example.com" AUTH_TOKEN="eyJhbGciOiJIUzI1NiIsInR5c....RvM" BASE_URL="https://YOURAPPNAME.fly.dev"`.
 
 > If you use Alby Cloud, you also need to set `ALBYHUB_NAME="YOUR_ALBYHUB_NAME"` to route requests to your specific hub.
 
-You can get the ALBYHUB_URL, AUTH_TOKEN and ALBYHUB_NAME by logging into Alby Hub and Going to settings -> Developer.
+> You can get the ALBYHUB_URL, AUTH_TOKEN and ALBYHUB_NAME by logging into Alby Hub and Going to settings -> Developer.
 
-> Optionally set `NAME`, `DESCRIPTION` and `IMAGE` if you'd like to list your Jim instance on [Jim Index](https://getalby.github.io/jim-index/)
+> Optionally set `NAME`, `DESCRIPTION` and `IMAGE` as additional secrets if you'd like to list your Jim instance on [Jim Index](https://getalby.github.io/jim-index/)
 
 ### Updating
 
