@@ -10,16 +10,55 @@ App Connections have a 10 sat / 1% reserve to account for possible routing fees.
 
 ## API
 
-You can also create new wallets via the API. Simply do a POST request to `/api/wallets` which will return a JSON response like:
+### Create a new wallet
+
+`POST /api/wallets`
+
+returns:
 
 ```json
 {
   "connectionSecret": "nostr+walletconnect://xxx?relay=yyy&secret=zzz&lud16=123456@alby-jim.fly.dev",
-  "lightningAddress": "123456@alby-jim.fly.dev"
+  "lightningAddress": "123456@alby-jim.fly.dev",
+  "valueTag": "<podcast:value type=...</podcast:value>"
 }
 ```
 
 If a password is required, specify it in the `Authorization` header in the basic auth format, where the ID is an empty string. e.g. `"Authorization": "Basic OjEyMw=="` for password `123`.
+
+### Get reserves
+
+`GET /api/reserves`
+
+returns:
+
+```json
+{
+  "numApps": 4,
+  "totalAppBalance": 114000,
+  "numChannels": 1,
+  "hasPublicChannels": false,
+  "totalOutgoingCapacity": 4821836,
+  "totalChannelCapacity": 198000000
+}
+```
+
+### Get instance info
+
+> See `.env.example` on how to set this info.
+
+returns:
+
+```json
+{
+  "name": "Uncle Jim Demo Server",
+  "description": "This demo server shows how easy it is for new users to get a wallet. For demo purposes only - this server has a small amount of liquidity and will not be increased.",
+  "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Bust_of_Satoshi_Nakamoto_in_Budapest.jpg/440px-Bust_of_Satoshi_Nakamoto_in_Budapest.jpg",
+  "dailyWalletLimit": 10
+}
+```
+
+`GET /api/info`
 
 ## Development
 
@@ -68,7 +107,7 @@ You can get the ALBYHUB_URL, AUTH_TOKEN and ALBYHUB_NAME by logging into Alby Hu
 - [x] podcasting value tag
 - [x] daily wallet creation rate limit
 - [x] scan QR
-- [ ] get Jim instance info via REST API
+- [x] get Jim reserves and instance info via REST API
 - [ ] daily record of reserves + charts
 - [ ] per-connection limits (so one user cannot use all the liquidity provided by the service)
 - [ ] extra open actions (Alby Account, Mobile Wallet, Web Wallet, Nostrudel?, ...) & instructions

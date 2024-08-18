@@ -9,6 +9,7 @@ export type Reserves = {
   totalChannelCapacity: number;
   numApps: number;
   totalAppBalance: number;
+  hasPublicChannels: boolean;
 };
 
 export type Wallet = {
@@ -146,6 +147,7 @@ export async function getReserves(): Promise<Reserves | undefined> {
       localSpendableBalance: number;
       localBalance: number;
       remoteBalance: number;
+      public: boolean;
     }[];
 
     const relevantApps = apps.filter(
@@ -166,6 +168,7 @@ export async function getReserves(): Promise<Reserves | undefined> {
       numApps: relevantApps.length,
       totalAppBalance,
       numChannels: channels.length,
+      hasPublicChannels: channels.some((channel) => channel.public),
       totalOutgoingCapacity,
       totalChannelCapacity,
     };
@@ -173,6 +176,15 @@ export async function getReserves(): Promise<Reserves | undefined> {
     console.error(error);
     return undefined;
   }
+}
+
+export async function getInfo() {
+  return {
+    name: process.env.NAME,
+    description: process.env.DESCRIPTION,
+    image: process.env.IMAGE,
+    dailyWalletLimit: getDailyWalletLimit(),
+  };
 }
 
 function getHeaders() {
