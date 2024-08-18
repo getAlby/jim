@@ -53,7 +53,7 @@ You can get the ALBYHUB_URL, AUTH_TOKEN and ALBYHUB_NAME by logging into Alby Hu
 
 1. Run `fly deploy`
 
-## TODOs
+## Features
 
 - [x] One click wallet creation
 - [x] Show balance
@@ -67,7 +67,8 @@ You can get the ALBYHUB_URL, AUTH_TOKEN and ALBYHUB_NAME by logging into Alby Hu
 - [x] basic lightning addresses
 - [x] podcasting value tag
 - [x] daily wallet creation rate limit
-- [ ] scan QR
+- [x] scan QR
+- [ ] get Jim instance info via REST API
 - [ ] daily record of reserves + charts
 - [ ] per-connection limits (so one user cannot use all the liquidity provided by the service)
 - [ ] extra open actions (Alby Account, Mobile Wallet, Web Wallet, Nostrudel?, ...) & instructions

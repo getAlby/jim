@@ -6,6 +6,7 @@ import { AlbyExtension } from "./components/AlbyExtension";
 import { Topup } from "./components/Topup";
 import { nwc } from "@getalby/sdk";
 import Link from "next/link";
+import { ScanQR } from "./components/ScanQR";
 
 export default function Home() {
   const [wallet, setWallet] = React.useState<Wallet>();
@@ -123,6 +124,7 @@ export default function Home() {
               >
                 Connect to Alby Account
               </a>
+              <ScanQR connectionSecret={wallet.connectionSecret} />
             </div>
 
             <p className="text-sm mt-4">
