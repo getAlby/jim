@@ -88,6 +88,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can get the ALBYHUB_URL, AUTH_TOKEN and ALBYHUB_NAME by logging into Alby Hub and Going to settings -> Developer.
 
+> Optionally set `NAME`, `DESCRIPTION` and `IMAGE` if you'd like to list your Jim instance on [Jim Index](https://getalby.github.io/jim-index/)
+
 ### Updating
 
 1. Run `fly deploy`
