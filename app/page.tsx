@@ -19,7 +19,11 @@ export default function Home() {
       if (await hasPassword()) {
         password = prompt("Please enter the password") || undefined;
       }
-      setWallet(await createWallet(password));
+      const { wallet, error } = await createWallet(password);
+      if (error) {
+        throw new Error(error);
+      }
+      setWallet(wallet);
     } catch (error) {
       console.error(error);
       alert("Something went wrong: " + error);

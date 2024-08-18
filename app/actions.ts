@@ -1,7 +1,7 @@
 "use server";
 
 import { saveConnectionSecret } from "./db";
-import { getAlbyHubUrl, getDomain } from "./utils";
+import { getAlbyHubUrl, getDailyWalletLimit, getDomain } from "./utils";
 
 export type Reserves = {
   numChannels: number;
@@ -27,12 +27,24 @@ export async function hasPassword() {
 
 export async function createWallet(
   password: string | undefined
-): Promise<Wallet | undefined> {
+): Promise<{ wallet: Wallet | undefined; error: string | undefined }> {
   try {
     if (process.env.PASSWORD) {
       if (password !== process.env.PASSWORD) {
-        return undefined;
+        return { wallet: undefined, error: "wrong password" };
       }
+    }
+
+    const apps = (await fetch(new URL("/api/apps", getAlbyHubUrl()), {
+      headers: getHeaders(),
+    }).then((res) => res.json())) as { createdAt: string }[];
+
+    const walletsCreatedToday = apps.filter(
+      (app) =>
+        new Date(app.createdAt).getTime() > Date.now() - 24 * 60 * 60 * 1000
+    );
+    if (walletsCreatedToday.length > getDailyWalletLimit()) {
+      return { wallet: undefined, error: "daily wallet limit reached" };
     }
 
     if (!nodePubkey) {
@@ -107,15 +119,18 @@ export async function createWallet(
     const lightningAddress = username + "@" + domain;
 
     return {
-      connectionSecret: newApp.pairingUri + `&lud16=${username}@${domain}`,
-      lightningAddress,
-      valueTag: `<podcast:value type="lightning" method="keysend">
+      wallet: {
+        connectionSecret: newApp.pairingUri + `&lud16=${username}@${domain}`,
+        lightningAddress,
+        valueTag: `<podcast:value type="lightning" method="keysend">
     <podcast:valueRecipient name="${lightningAddress}" type="node" address="${nodePubkey}" customKey="696969"  customValue="${appId}" split="100"/>
   </podcast:value>`,
+      },
+      error: undefined,
     };
   } catch (error) {
     console.error(error);
-    return undefined;
+    return { wallet: undefined, error: "internal error" };
   }
 }
 

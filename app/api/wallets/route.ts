@@ -7,15 +7,17 @@ export async function POST(request: Request) {
     ? Buffer.from(credentials, "base64").toString().split(":")?.[1]
     : undefined;
 
-  const response = await createWallet(password);
+  const { wallet, error } = await createWallet(password);
 
-  if (!response) {
-    return Response.error();
+  if (!wallet) {
+    return new Response(error, {
+      status: 400,
+    });
   }
 
   return Response.json({
-    connectionSecret: response?.connectionSecret,
-    lightningAddress: response?.lightningAddress,
-    valueTag: response?.valueTag,
+    connectionSecret: wallet.connectionSecret,
+    lightningAddress: wallet.lightningAddress,
+    valueTag: wallet.valueTag,
   });
 }

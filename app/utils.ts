@@ -13,6 +13,10 @@ export function getBaseUrl() {
   return removeTrailingSlash(process.env.BASE_URL);
 }
 
+export function getDailyWalletLimit(): number {
+  return parseInt(process.env.DAILY_WALLET_LIMIT || "10");
+}
+
 export function getDomain() {
   let domain = getBaseUrl().split("//")[1];
 

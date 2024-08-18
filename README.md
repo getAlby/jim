@@ -66,9 +66,9 @@ You can get the ALBYHUB_URL, AUTH_TOKEN and ALBYHUB_NAME by logging into Alby Hu
 - [x] password protect
 - [x] basic lightning addresses
 - [x] podcasting value tag
+- [x] daily wallet creation rate limit
 - [ ] scan QR
 - [ ] daily record of reserves + charts
-- [ ] daily wallet creation rate limit
 - [ ] per-connection limits (so one user cannot use all the liquidity provided by the service)
 - [ ] extra open actions (Alby Account, Mobile Wallet, Web Wallet, Nostrudel?, ...) & instructions
 
