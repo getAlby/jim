@@ -1,6 +1,7 @@
 "use server";
 
 import { saveConnectionSecret } from "./db";
+import { getAlbyHubUrl, getDomain } from "./utils";
 
 export type Reserves = {
   numChannels: number;
@@ -28,9 +29,6 @@ export async function createWallet(
   password: string | undefined
 ): Promise<Wallet | undefined> {
   try {
-    if (!process.env.BASE_URL) {
-      throw new Error("No BASE_URL set");
-    }
     if (process.env.PASSWORD) {
       if (password !== process.env.PASSWORD) {
         return undefined;
@@ -39,7 +37,7 @@ export async function createWallet(
 
     if (!nodePubkey) {
       const connectionInfoResponse = await fetch(
-        `${process.env.ALBYHUB_URL}/api/node/connection-info`,
+        new URL("/api/node/connection-info", getAlbyHubUrl()),
         {
           headers: getHeaders(),
         }
@@ -57,7 +55,7 @@ export async function createWallet(
     }
 
     let appId: number;
-    const newAppResponse = await fetch(`${process.env.ALBYHUB_URL}/api/apps`, {
+    const newAppResponse = await fetch(new URL("/api/apps", getAlbyHubUrl()), {
       method: "POST",
       body: JSON.stringify({
         name: APP_NAME_PREFIX + Math.floor(Date.now() / 1000),
@@ -89,7 +87,7 @@ export async function createWallet(
 
     // TODO: remove once app id is returned in create call
     const appResponse = await fetch(
-      `${process.env.ALBYHUB_URL}/api/apps/${newApp.pairingPublicKey}`,
+      new URL(`/api/apps/${newApp.pairingPublicKey}`, getAlbyHubUrl()),
       {
         headers: getHeaders(),
       }
@@ -105,7 +103,7 @@ export async function createWallet(
 
     const { username } = await saveConnectionSecret(newApp.pairingUri);
 
-    const domain = process.env.BASE_URL.split("//")[1];
+    const domain = getDomain();
     const lightningAddress = username + "@" + domain;
 
     return {
@@ -123,11 +121,11 @@ export async function createWallet(
 
 export async function getReserves(): Promise<Reserves | undefined> {
   try {
-    const apps = (await fetch(`${process.env.ALBYHUB_URL}/api/apps`, {
+    const apps = (await fetch(new URL("/api/apps", getAlbyHubUrl()), {
       headers: getHeaders(),
     }).then((res) => res.json())) as { name: string; balance: number }[];
 
-    const channels = (await fetch(`${process.env.ALBYHUB_URL}/api/channels`, {
+    const channels = (await fetch(new URL("api/channels", getAlbyHubUrl()), {
       headers: getHeaders(),
     }).then((res) => res.json())) as {
       localSpendableBalance: number;
@@ -161,6 +159,7 @@ export async function getReserves(): Promise<Reserves | undefined> {
     return undefined;
   }
 }
+
 function getHeaders() {
   return {
     Authorization: `Bearer ${process.env.AUTH_TOKEN}`,

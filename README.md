@@ -23,9 +23,9 @@ If a password is required, specify it in the `Authorization` header in the basic
 
 ## Development
 
-Copy .env.example to .env.local and update the ALBYHUB_URL, ALBYHUB_NAME, and AUTH_TOKEN properties.
+Copy .env.example to .env.local and update the ALBYHUB_URL and AUTH_TOKEN properties.
 
-You can get the ALBYHUB_URL, AUTH_TOKEN and ALBYHUB_NAME by logging into Alby Hub and Going to settings -> Developer. ALBYHUB_NAME is only needed for Alby Cloud-hosted Alby Hubs.
+You can get the `ALBYHUB_URL` and `AUTH_TOKEN` by logging into Alby Hub and Going to settings -> Developer. If you use Alby Cloud, you'll also need to provide `ALBYHUB_NAME` to route requests to your hub.
 
 Then, run the development server:
 
@@ -39,15 +39,15 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Run on Fly
 
-> NOTE: it's recommended to use a separate Alby Hub instance if you wish to run Alby Jim.
-
 1. Get a fly account and install flyctl
 2. Clone or download this repository.
 3. Update fly.toml to have a different app name
 4. Open a terminal and navigate to the repository folder you cloned/downloaded. Run `fly launch`
-5. Set your fly secrets: `fly secrets set ALBYHUB_URL="" ALBYHUB_NAME="" AUTH_TOKEN="" BASE_URL="https://YOURAPPNAME.fly.dev"`
+5. Set your fly secrets: `fly secrets set ALBYHUB_URL="your-albyhub-url.example.com" AUTH_TOKEN="eyJhbGciOiJIUzI1NiIsInR5c....RvM" BASE_URL="https://YOURAPPNAME.fly.dev"`.
 
-You can get the ALBYHUB_URL, AUTH_TOKEN and ALBYHUB_NAME by logging into Alby Hub and Going to settings -> Developer. ALBYHUB_NAME is only needed for Alby Cloud-hosted Alby Hubs.
+> If you use Alby Cloud, you also need to set `ALBYHUB_NAME="YOUR_ALBYHUB_NAME"` to route requests to your specific hub.
+
+You can get the ALBYHUB_URL, AUTH_TOKEN and ALBYHUB_NAME by logging into Alby Hub and Going to settings -> Developer.
 
 ### Updating
 
