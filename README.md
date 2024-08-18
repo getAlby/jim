@@ -2,7 +2,7 @@
 
 Become "Uncle Jim" and create instant wallets that you can give to your community, friends or family. They get wallets powered by your Alby Hub's liquidity, without having to know the first thing about lightning or bitcoin.
 
-Try the [demo server](https://alby-jim.fly.dev)
+Try the [demo server](https://alby-jim.fly.dev) or browse the [public index](https://getalby.github.io/jim-index/)
 
 Powered by [Alby Hub](https://getalby.com)
 
