@@ -15,7 +15,7 @@ export function AlbyExtension({
         }
         await (window as any).alby.enable();
         const { success } = await (window as any).alby.addAccount({
-          name: "Alby Jim",
+          name: "Uncle Jim",
           connector: "nwc",
           config: {
             nostrWalletConnectUrl: connectionSecret,

@@ -58,7 +58,8 @@ export default function Home() {
 
   return (
     <>
-      <p className="font-semibold">Alby Jim</p>
+      <img src="/uncle-jim.png" className="w-16 h-16 rounded-lg" alt="" />
+      <p className="font-semibold mt-4">Uncle Jim</p>
       <div className="flex flex-col gap-4 max-w-lg border-2 rounded-xl p-4 items-center justify-center mt-4 mb-16">
         {!wallet && (
           <p>
@@ -159,7 +160,7 @@ export default function Home() {
             </p>
 
             <p className="mt-8 text-sm">Your podcasting 2.0 value tag is:</p>
-            <p className="max-w-sm bg-gray-300 p-4 rounded-lg break-words">
+            <p className="max-w-sm bg-base-200 p-4 rounded-lg break-words">
               <span className="font-mono font-semibold">{wallet.valueTag}</span>
             </p>
             <p className="text-xs max-w-xs text-center">
