@@ -84,6 +84,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 4. Open a terminal and navigate to the folder your fly.toml is in. Run `fly launch`
 5. Set your fly secrets: `fly secrets set ALBYHUB_URL="your-albyhub-url.example.com" AUTH_TOKEN="eyJhbGciOiJIUzI1NiIsInR5c....RvM" BASE_URL="https://YOURAPPNAME.fly.dev"`.
 
+> `BASE_URL` is the URL where you will host your Jim app.
+
 > If you use Alby Cloud, you also need to set `ALBYHUB_NAME="YOUR_ALBYHUB_NAME"` to route requests to your specific hub.
 
 > You can get the ALBYHUB_URL, AUTH_TOKEN and ALBYHUB_NAME by logging into Alby Hub and Going to settings -> Developer.

@@ -1,8 +1,9 @@
 export function getAlbyHubUrl() {
-  if (!process.env.ALBYHUB_URL) {
-    throw new Error("No BASE_URL set");
+  const albyHubUrl = process.env.ALBYHUB_URL || process.env.ALBY_HUB_URL;
+  if (!albyHubUrl) {
+    throw new Error("No ALBYHUB_URL set");
   }
-  return removeTrailingSlash(process.env.ALBYHUB_URL);
+  return removeTrailingSlash(albyHubUrl);
 }
 
 export function getBaseUrl() {
