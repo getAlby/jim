@@ -62,9 +62,9 @@ returns:
 
 ## Development
 
-Copy .env.example to .env.local and update the ALBYHUB_URL and AUTH_TOKEN properties.
+Copy .env.example to .env.local and update the ALBY_HUB_URL and AUTH_TOKEN properties.
 
-You can get the `ALBYHUB_URL` and `AUTH_TOKEN` by logging into Alby Hub and Going to settings -> Developer. If you use Alby Cloud, you'll also need to provide `ALBYHUB_NAME` to route requests to your hub.
+You can get the `ALBY_HUB_URL` and `AUTH_TOKEN` by logging into Alby Hub and Going to settings -> Developer. If you use Alby Cloud, you'll also need to provide `ALBY_HUB_NAME` to route requests to your hub.
 
 Then, run the development server:
 
@@ -82,13 +82,13 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 2. Download the [fly.toml file](https://github.com/getAlby/jim/blob/master/hosting/fly.toml) and save it inside an empty folder.
 3. Open fly.toml in a text editor and change the app name on line 6 to a unique one (e.g. app = 'my-awesome-app-name').
 4. Open a terminal and navigate to the folder your fly.toml is in. Run `fly launch`
-5. Set your fly secrets: `fly secrets set ALBYHUB_URL="your-albyhub-url.example.com" AUTH_TOKEN="eyJhbGciOiJIUzI1NiIsInR5c....RvM" BASE_URL="https://YOURAPPNAME.fly.dev"`.
+5. Set your fly secrets: `fly secrets set ALBY_HUB_URL="your-albyhub-url.example.com" AUTH_TOKEN="eyJhbGciOiJIUzI1NiIsInR5c....RvM" BASE_URL="https://YOURAPPNAME.fly.dev"`.
 
 > `BASE_URL` is the URL where you will host your Jim app.
 
-> If you use Alby Cloud, you also need to set `ALBYHUB_NAME="YOUR_ALBYHUB_NAME"` to route requests to your specific hub.
+> If you use Alby Cloud, you also need to set `ALBY_HUB_NAME="YOUR_ALBY_HUB_NAME"` to route requests to your specific hub.
 
-> You can get the ALBYHUB_URL, AUTH_TOKEN and ALBYHUB_NAME by logging into Alby Hub and Going to settings -> Developer.
+> You can get the ALBY_HUB_URL, AUTH_TOKEN and ALBY_HUB_NAME by logging into Alby Hub and Going to settings -> Developer.
 
 > Optionally set `NAME`, `DESCRIPTION` and `IMAGE` as additional secrets if you'd like to list your Jim instance on [Jim Index](https://getalby.github.io/jim-index/)
 
