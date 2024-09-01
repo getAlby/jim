@@ -179,11 +179,13 @@ export async function getReserves(): Promise<Reserves | undefined> {
 }
 
 export async function getInfo() {
+  const passwordRequired: boolean = Boolean(process.env.PASSWORD);
   return {
     name: process.env.NAME,
     description: process.env.DESCRIPTION,
     image: process.env.IMAGE,
     dailyWalletLimit: getDailyWalletLimit(),
+    passwordRequired,
   };
 }
 
