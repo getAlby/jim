@@ -10,9 +10,25 @@ import { ScanQR } from "./components/ScanQR";
 
 export default function Home() {
   const [wallet, setWallet] = React.useState<Wallet>();
+  const [loadedSavedWallet, setLoadedSavedWallet] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [copied, setCopied] = React.useState<"nwcUrl" | "lightningAddress">();
   const [balance, setBalance] = React.useState(0);
+  React.useEffect(() => {
+    const savedWalletJSON = window.localStorage.getItem("wallet");
+    if (savedWalletJSON) {
+      const _wallet = JSON.parse(savedWalletJSON);
+      setWallet(_wallet);
+      setLoadedSavedWallet(true);
+      (async () => {
+        const client = new nwc.NWCClient({
+          nostrWalletConnectUrl: _wallet.connectionSecret,
+        });
+        const _balance = await client.getBalance();
+        setBalance(_balance.balance);
+      })();
+    }
+  }, []);
   async function onSubmit() {
     setLoading(true);
     try {
@@ -25,6 +41,9 @@ export default function Home() {
         throw new Error(error);
       }
       setWallet(wallet);
+      if (wallet) {
+        window.localStorage.setItem("wallet", JSON.stringify(wallet));
+      }
     } catch (error) {
       console.error(error);
       alert("Something went wrong: " + error);
@@ -91,7 +110,35 @@ export default function Home() {
         )}
         {wallet && (
           <>
-            <p>New Wallet Created!</p>
+            <p>
+              {loadedSavedWallet ? (
+                <>
+                  Welcome back,{" "}
+                  <span className="font-semibold">
+                    {wallet.lightningAddress}
+                  </span>
+                </>
+              ) : (
+                "New Wallet Created!"
+              )}
+            </p>
+            {loadedSavedWallet && (
+              <button
+                className="btn btn-secondary btn-sm"
+                onClick={() => {
+                  if (
+                    confirm(
+                      "Are you sure you wish to log out? if you haven't saved your connection secret, any funds in this wallet will be lost."
+                    )
+                  ) {
+                    window.localStorage.removeItem("wallet");
+                    window.location.reload();
+                  }
+                }}
+              >
+                Log out
+              </button>
+            )}
             <p className="text-xs max-w-xs text-center">
               {"Make sure to copy it and save it somewhere safe."}
             </p>
