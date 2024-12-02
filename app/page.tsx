@@ -239,12 +239,12 @@ export default function Home() {
           View reserves
         </Link>
         <a
-          href="https://github.com/rolznz/jim?tab=readme-ov-file#api"
+          href="https://github.com/getAlby/jim?tab=readme-ov-file#api"
           className="text-xs link mt-4"
         >
           Developer API
         </a>
-        <a href="https://github.com/rolznz/jim" className="text-xs link mt-4">
+        <a href="https://github.com/getAlby/jim" className="text-xs link mt-4">
           source
         </a>
       </div>
