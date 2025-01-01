@@ -15,4 +15,5 @@ model ConnectionSecret {
   id String @id
   pubkey String @unique
   username String @unique
+  subscribed Boolean @default(false)
 }
