@@ -1,6 +1,6 @@
 "use server";
 
-import { saveConnectionSecret } from "./db";
+import { saveConnectionSecret, UsernameTakenError } from "./db";
 import { getAlbyHubUrl, getDailyWalletLimit, getDomain } from "./utils";
 
 export type Reserves = {
@@ -135,6 +135,12 @@ export async function createWallet(
     };
   } catch (error) {
     console.error(error);
+
+    // only expose known errors
+    if (error instanceof UsernameTakenError) {
+      return { wallet: undefined, error: error.message };
+    }
+
     return { wallet: undefined, error: "internal error" };
   }
 }

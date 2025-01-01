@@ -22,6 +22,12 @@ export async function POST(request: Request) {
   // force lowercase username
   if (createWalletRequest.username) {
     createWalletRequest.username = createWalletRequest.username.toLowerCase();
+
+    if (!/^[a-z0-9]+$/.test(createWalletRequest.username)) {
+      return new Response("only letters and numbers in username are allowed", {
+        status: 400,
+      });
+    }
   }
 
   const { wallet, error } = await createWallet(

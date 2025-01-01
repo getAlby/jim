@@ -1,8 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 import { nwc } from "@getalby/sdk";
 import { getPublicKey } from "nostr-tools";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 const prisma = new PrismaClient();
+
+export class UsernameTakenError extends Error {
+  constructor() {
+    super("username taken");
+  }
+}
 
 export async function saveConnectionSecret(
   username: string | undefined,
@@ -15,14 +22,25 @@ export async function saveConnectionSecret(
   const pubkey = getPublicKey(parsed.secret);
   username = username || pubkey.substring(0, 6);
 
-  const result = await prisma.connectionSecret.create({
-    data: {
-      id: connectionSecret,
-      username,
-      pubkey,
-    },
-  });
-  return { username: result.username };
+  try {
+    const result = await prisma.connectionSecret.create({
+      data: {
+        id: connectionSecret,
+        username,
+        pubkey,
+      },
+    });
+    return { username: result.username };
+  } catch (error) {
+    console.error("failed to save wallet", error);
+    if (
+      error instanceof PrismaClientKnownRequestError &&
+      error.code === "P2002" // unique constraint
+    ) {
+      throw new UsernameTakenError();
+    }
+    throw error;
+  }
 }
 
 export async function findWalletConnection(query: { username: string }) {
