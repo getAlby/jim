@@ -18,7 +18,7 @@ body (optional):
 
 ```json
 {
-  "username": "Bob"
+  "username": "bob"
 }
 ```
 

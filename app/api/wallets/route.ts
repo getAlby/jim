@@ -19,6 +19,11 @@ export async function POST(request: Request) {
     console.error("Failed to parse request body", error);
   }
 
+  // force lowercase username
+  if (createWalletRequest.username) {
+    createWalletRequest.username = createWalletRequest.username.toLowerCase();
+  }
+
   const { wallet, error } = await createWallet(
     createWalletRequest,
     servicePassword
