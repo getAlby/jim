@@ -45,7 +45,7 @@ export default function Home() {
         window.localStorage.setItem("wallet", JSON.stringify(wallet));
       }
     } catch (error) {
-      console.error(error);
+      console.error("failed to create wallet", { error });
       alert("Something went wrong: " + error);
     }
     setLoading(false);

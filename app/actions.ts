@@ -1,6 +1,7 @@
 "use server";
 
 import { saveConnectionSecret, UsernameTakenError } from "./db";
+import { NWC_POOL } from "./nwc/nwcPool";
 import { getAlbyHubUrl, getDailyWalletLimit, getDomain } from "./utils";
 
 export type Reserves = {
@@ -115,10 +116,13 @@ export async function createWallet(
     }
     appId = appInfo.id;
 
-    const { username } = await saveConnectionSecret(
+    const connectionSecret = await saveConnectionSecret(
       request?.username,
       newApp.pairingUri
     );
+    await NWC_POOL.subscribeUser(connectionSecret);
+
+    const { username } = connectionSecret;
 
     const domain = getDomain();
     const lightningAddress = username + "@" + domain;
@@ -134,7 +138,7 @@ export async function createWallet(
       error: undefined,
     };
   } catch (error) {
-    console.error(error);
+    console.error("failed to create wallet", { error });
 
     // only expose known errors
     if (error instanceof UsernameTakenError) {
@@ -183,7 +187,7 @@ export async function getReserves(): Promise<Reserves | undefined> {
       totalChannelCapacity,
     };
   } catch (error) {
-    console.error(error);
+    console.error("failed to get reserves", { error });
     return undefined;
   }
 }

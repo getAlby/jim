@@ -66,7 +66,9 @@ returns:
 }
 ```
 
-`GET /api/info`
+## Nostr Zaps
+
+Zaps are supported by receiving payment notifications through [http-nostr](https://github.com/getAlby/http-nostr)
 
 ## Development
 
