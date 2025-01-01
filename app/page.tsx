@@ -36,7 +36,7 @@ export default function Home() {
       if (await hasPassword()) {
         password = prompt("Please enter the password") || undefined;
       }
-      const { wallet, error } = await createWallet(password);
+      const { wallet, error } = await createWallet(undefined, password);
       if (error) {
         throw new Error(error);
       }
