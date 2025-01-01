@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import { findWalletConnection } from "@/app/db";
 import { nwc } from "@getalby/sdk";
 import { validateZapRequest } from "nostr-tools/nip57";
+import { NWC_POOL } from "@/app/nwc/nwcPool";
 
 export async function GET(
   request: NextRequest,
@@ -26,7 +27,7 @@ export async function GET(
 
   // subscribe to existing lightning addresses
   if (!connection.subscribed) {
-    await this.subscribeUser(connection);
+    await NWC_POOL.subscribeUser(connection);
   }
 
   const nwcClient = new nwc.NWCClient({ nostrWalletConnectUrl: connection.id });
