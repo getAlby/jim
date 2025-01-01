@@ -3,11 +3,26 @@ import { createWallet } from "@/app/actions";
 export async function POST(request: Request) {
   const credentials = request.headers.get("Authorization")?.split(" ")?.[1];
 
-  const password = credentials
+  const servicePassword = credentials
     ? Buffer.from(credentials, "base64").toString().split(":")?.[1]
     : undefined;
 
-  const { wallet, error } = await createWallet(password);
+  let createWalletRequest: { username: string | undefined } = {
+    username: undefined,
+  };
+  try {
+    if (request.body) {
+      const body = await request.json();
+      createWalletRequest.username = body.username;
+    }
+  } catch (error) {
+    console.error("Failed to parse request body", error);
+  }
+
+  const { wallet, error } = await createWallet(
+    createWalletRequest,
+    servicePassword
+  );
 
   if (!wallet) {
     return new Response(error, {

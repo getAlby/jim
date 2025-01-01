@@ -5,6 +5,7 @@ import { getPublicKey } from "nostr-tools";
 const prisma = new PrismaClient();
 
 export async function saveConnectionSecret(
+  username: string | undefined,
   connectionSecret: string
 ): Promise<{ username: string }> {
   const parsed = nwc.NWCClient.parseWalletConnectUrl(connectionSecret);
@@ -12,7 +13,7 @@ export async function saveConnectionSecret(
     throw new Error("no secret found in connection secret");
   }
   const pubkey = getPublicKey(parsed.secret);
-  const username = pubkey.substring(0, 6);
+  username = username || pubkey.substring(0, 6);
 
   const result = await prisma.connectionSecret.create({
     data: {

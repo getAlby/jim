@@ -14,6 +14,14 @@ App Connections have a 10 sat / 1% reserve to account for possible routing fees.
 
 `POST /api/wallets`
 
+body (optional):
+
+```json
+{
+  "username": "Bob"
+}
+```
+
 returns:
 
 ```json

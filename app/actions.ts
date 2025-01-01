@@ -27,11 +27,12 @@ export async function hasPassword() {
 }
 
 export async function createWallet(
-  password: string | undefined
+  request: { username: string | undefined } | undefined,
+  servicePassword: string | undefined
 ): Promise<{ wallet: Wallet | undefined; error: string | undefined }> {
   try {
     if (process.env.PASSWORD) {
-      if (password !== process.env.PASSWORD) {
+      if (servicePassword !== process.env.PASSWORD) {
         return { wallet: undefined, error: "wrong password" };
       }
     }
@@ -114,7 +115,10 @@ export async function createWallet(
     }
     appId = appInfo.id;
 
-    const { username } = await saveConnectionSecret(newApp.pairingUri);
+    const { username } = await saveConnectionSecret(
+      request?.username,
+      newApp.pairingUri
+    );
 
     const domain = getDomain();
     const lightningAddress = username + "@" + domain;
