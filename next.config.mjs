@@ -10,6 +10,10 @@ const nextConfig = {
             value: "*",
           },
           {
+            key: "Access-Control-Allow-Headers",
+            value: "*",
+          },
+          {
             key: "Access-Control-Allow-Methods",
             value: "GET, POST, PUT, DELETE, OPTIONS",
           },
@@ -21,6 +25,10 @@ const nextConfig = {
           {
             key: 'Access-Control-Allow-Origin',
             value: '*',
+          },
+          {
+            key: "Access-Control-Allow-Headers",
+            value: "*",
           },
           {
             key: 'Access-Control-Allow-Methods',
