@@ -74,7 +74,7 @@ Zaps are supported by receiving payment notifications through [http-nostr](https
 
 Copy .env.example to .env.local and update the ALBY_HUB_URL and AUTH_TOKEN properties.
 
-You can get the `ALBY_HUB_URL` and `AUTH_TOKEN` by logging into Alby Hub and Going to settings -> Developer. If you use Alby Cloud, you'll also need to provide `ALBY_HUB_NAME` to route requests to your hub.
+You can get the `ALBY_HUB_URL` and `AUTH_TOKEN` by logging into Alby Hub and Going to settings -> Developer. If you use Alby Cloud, you'll also need to provide `ALBY_HUB_NAME` and `ALBY_HUB_REGION` to route requests to your hub.
 
 Then, run the development server:
 
@@ -96,9 +96,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 > `BASE_URL` is the URL where you will host your Jim app.
 
-> If you use Alby Cloud, you also need to set `ALBY_HUB_NAME="YOUR_ALBY_HUB_NAME"` to route requests to your specific hub.
+> If you use Alby Cloud, you also need to set `ALBY_HUB_NAME="YOUR_ALBY_HUB_NAME"` and `ALBY_HUB_REGION="YOUR_ALBY_HUB_REGION"` to route requests to your specific hub.
 
-> You can get the ALBY_HUB_URL, AUTH_TOKEN and ALBY_HUB_NAME by logging into Alby Hub and Going to settings -> Developer.
+> You can get the ALBY_HUB_URL, AUTH_TOKEN, ALBY_HUB_NAME and ALBY_HUB_REGION by logging into Alby Hub and Going to settings -> Developer.
 
 > Optionally set `NAME`, `DESCRIPTION` and `IMAGE` as additional secrets if you'd like to list your Jim instance on [Jim Index](https://getalby.github.io/jim-index/)
 

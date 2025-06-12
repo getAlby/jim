@@ -38,9 +38,20 @@ export async function createWallet(
       }
     }
 
-    const apps = (await fetch(new URL("/api/apps", getAlbyHubUrl()), {
+    const appsResponse = await fetch(new URL("/api/apps", getAlbyHubUrl()), {
       headers: getHeaders(),
-    }).then((res) => res.json())) as { createdAt: string }[];
+    });
+
+    if (!appsResponse.ok) {
+      throw new Error(
+        "Unexpected response from Alby Hub: " +
+          appsResponse.status +
+          " " +
+          (await appsResponse.text())
+      );
+    }
+
+    const apps = (await appsResponse.json()) as { createdAt: string }[];
 
     const walletsCreatedToday = apps.filter(
       (app) =>
@@ -69,12 +80,12 @@ export async function createWallet(
       nodePubkey = nodeInfo.pubkey;
     }
 
-    let appId: number;
     const newAppResponse = await fetch(new URL("/api/apps", getAlbyHubUrl()), {
       method: "POST",
       body: JSON.stringify({
         name:
-          APP_NAME_PREFIX + request?.username || Math.floor(Date.now() / 1000),
+          APP_NAME_PREFIX +
+          (request?.username || Math.floor(Date.now() / 1000)),
         pubkey: "",
         budgetRenewal: "monthly",
         maxAmount: 0,
@@ -94,28 +105,11 @@ export async function createWallet(
     if (!newAppResponse.ok) {
       throw new Error("Failed to create app: " + (await newAppResponse.text()));
     }
-    // TODO: app id should also be returned here
-    const newApp: { pairingUri: string; pairingPublicKey: string } =
+    const newApp: { pairingUri: string; pairingPublicKey: string; id: string } =
       await newAppResponse.json();
     if (!newApp.pairingUri) {
       throw new Error("No pairing URI in create app response");
     }
-
-    // TODO: remove once app id is returned in create call
-    const appResponse = await fetch(
-      new URL(`/api/apps/${newApp.pairingPublicKey}`, getAlbyHubUrl()),
-      {
-        headers: getHeaders(),
-      }
-    );
-    if (!appResponse.ok) {
-      throw new Error("Failed to create app: " + (await appResponse.text()));
-    }
-    const appInfo: { id: number } = await appResponse.json();
-    if (!appInfo.id) {
-      throw new Error("Could not find id in app response");
-    }
-    appId = appInfo.id;
 
     const connectionSecret = await saveConnectionSecret(
       request?.username,
@@ -133,7 +127,7 @@ export async function createWallet(
         connectionSecret: newApp.pairingUri + `&lud16=${username}@${domain}`,
         lightningAddress,
         valueTag: `<podcast:value type="lightning" method="keysend">
-    <podcast:valueRecipient name="${lightningAddress}" type="node" address="${nodePubkey}" customKey="696969"  customValue="${appId}" split="100"/>
+    <podcast:valueRecipient name="${lightningAddress}" type="node" address="${nodePubkey}" customKey="696969"  customValue="${newApp.id}" split="100"/>
   </podcast:value>`,
       },
       error: undefined,
@@ -208,6 +202,8 @@ function getHeaders() {
   return {
     Authorization: `Bearer ${process.env.AUTH_TOKEN}`,
     "AlbyHub-Name": process.env.ALBYHUB_NAME || process.env.ALBY_HUB_NAME || "",
+    "AlbyHub-Region":
+      process.env.ALBYHUB_REGION || process.env.ALBY_HUB_REGION || "",
     "Content-Type": "application/json",
     Accept: "application/json",
   };
