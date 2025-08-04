@@ -20,6 +20,7 @@ export type Wallet = {
 };
 
 const APP_NAME_PREFIX = process.env.APP_NAME_PREFIX || "Alby Jim ";
+const FETCH_APPS_LIMIT = 100;
 
 let nodePubkey: string;
 
@@ -38,9 +39,24 @@ export async function createWallet(
       }
     }
 
-    const appsResponse = await fetch(new URL("/api/apps", getAlbyHubUrl()), {
-      headers: getHeaders(),
-    });
+    // TODO: store connection creation dates locally instead
+    // then we do not need to fetch apps
+    if (getDailyWalletLimit() >= FETCH_APPS_LIMIT) {
+      throw new Error(
+        "Daily wallet limit is too large. Please use a value under " +
+          FETCH_APPS_LIMIT
+      );
+    }
+
+    const appsResponse = await fetch(
+      new URL(
+        `/api/apps?limit=${FETCH_APPS_LIMIT}&order_by=created_at&filters={}`,
+        getAlbyHubUrl()
+      ),
+      {
+        headers: getHeaders(),
+      }
+    );
 
     if (!appsResponse.ok) {
       throw new Error(
@@ -51,7 +67,11 @@ export async function createWallet(
       );
     }
 
-    const apps = (await appsResponse.json()) as { createdAt: string }[];
+    const apps = (
+      (await appsResponse.json()) as {
+        apps: { createdAt: string }[];
+      }
+    ).apps;
 
     const walletsCreatedToday = apps.filter(
       (app) =>
